@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "_Messages";
+}
+<form role="form" id="massageform">
+    <div class="form-group">
+        <label>標題</label>
+        <input type="text" class="form-control validate-require" id="title" name="title" placeholder="輸入標題">
+    </div>
+    <div class="form-group">
+        <label>姓名</label>
+        <input type="text" class="form-control validate-require" id="username" name="username" placeholder="輸入姓名">
+    </div>
+    <div class="form-group">
+        <label>聯絡電話</label>
+        <input type="text" class="form-control validate-require" id="phone" name="phone" placeholder="輸入聯絡電話" />
+    </div>
+    <div class="form-group">
+        <label>電子郵件</label>
+        <div class="input-group">
+            <span class="input-group-addon">@@</span>
+            <input type="text" class="form-control validate-require" id="email" name="email" placeholder="請輸入電子郵件">
+        </div>
+        <div id="erroeMsg"></div>
+    </div>
+    <div class="form-group">
+        <label>內容</label>
+        <p class="help-block">請留言於下方給我們，萬分感謝您的寶貴意見。</p>
+        <textarea class="form-control validate-require" rows="20" id="sug" name="sug"></textarea>
+    </div>
+    <button class="btn btn-default" data-toggle="tooltip" data-placement="right" title="請確認已填妥再送出" onclick="btnSubmit()">送出</button>
+</form>
+

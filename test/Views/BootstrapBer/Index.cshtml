@@ -1,0 +1,144 @@
+﻿
+<div class="container" style="min-height:500px">
+    <div class="row">
+        <div class="col-md-3" role="tabpanel">
+            <!-- Nav tabs -->
+            <ul class="nav nav-pills nav-stacked" role="tablist">
+                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">首頁</a></li>
+                <li role="presentation" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                        電影介紹 <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#aaaaaaa" data-toggle="tab">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
+                </li>
+                @*<ul class="dropdown-menu" role="menu">*@
+                @*@foreach (SiteMapNodeModel node in nodeList)
+                    {
+                        if (node.Title == "Separator")
+                        {
+                            @:
+                            <li class="divider"></li>
+                            continue;
+                        }
+
+                        string url = node.IsClickable ? node.Url : "#";
+
+                        if (!node.Children.Any())
+                        {
+                            @:
+                            <li><a href="@url">@node.Title</a></li>
+                        }
+                        else
+                        {
+                            @:
+                            <li class="dropdown-submenu"><a href="@url">@node.Title</a>@DropDownMenu(node.Children)</li>
+                        }
+                    }*@
+                @*<li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                    </li>*@
+                <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">意見留言</a></li>
+                <li role="presentation"><a href="#about" aria-controls="about" role="tab" data-toggle="tab">關於影城</a></li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="home">@Html.Action("Home", "BootstrapBer")</div>
+                <div role="tabpanel" class="tab-pane" id="aaaaaaa">@Html.Action("Introduce", "BootstrapBer")</div>
+                <div role="tabpanel" class="tab-pane" id="messages">@Html.Action("Messages", "BootstrapBer")</div>
+                <div role="tabpanel" class="tab-pane" id="about"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        $(function () {
+            $.validator.addClassRules({
+                "validate-require": { required: true }
+            });
+            $("[data-toggle='tooltip']").tooltip();
+        })
+        function Introduce() {
+            $.ajax({
+                url: '@Url.Action("Introduce", "BootstrapBer")',
+                data: $("#ConditionForm").serialize(),
+                type: "post",
+                async: true,
+                cache: false,
+                success: function (result) {
+                    $("#SearchResult").html(result);
+                }
+            });
+        }
+
+        function btnSubmit() {
+            $("#massageform").validate({
+                debug: true,
+                errorClass: "invalid",
+                rules: {
+                    title: {
+                        rangelength: [3, 20]
+                    },
+                    username: {
+                        maxlength: 100,
+                        minlength: 3
+                    },
+                    phone: {
+                        maxlength: 10,
+                        minlength: 8
+                    },
+                    email: {
+                        email: true
+                    }
+                },
+                messages: {
+                    username: { minlength: "不可小於3個字" },
+                    title: { rangelength: "標題介於3~20個字元" },
+                    phone: { minlength: "不可小於8個字" },
+                    email: {
+                        required: "E-mail不能為空",
+                        email: "E-mail地址不正確"
+                    }
+                },
+                submitHandler: function () {
+                    alert("感謝您的寶貴建議!");
+                    window.location.reload();
+                },
+
+                errorPlacement: function (error, element) {
+                    console.log(element.attr("id"));
+                    if (element.attr("id") == "email") {
+                        error.appendTo($("#erroeMsg"));
+                    }
+                    else {
+                        error.appendTo(element.parent());
+                    }
+                        
+                    
+                }
+            });
+        }
+    </script>
+}
+<style>
+    .invalid {
+        color: red;
+    }
+</style>
+
+
+
